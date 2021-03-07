@@ -60,12 +60,16 @@ model.add(Activation('softmax'))
 #training
 
 optimizer = RMSprop(lr=0.01)
+try:
+    model = load_model('keras_next_word_model', compile = True)
+except:
+    print("No saved module")
 model.compile(loss='categorical_crossentropy', optimizer=optimizer, metrics=['accuracy'])
 history = model.fit(X, Y, validation_split=0.05, batch_size=128, epochs=2, shuffle=True).history
 
-model.save('keras_next_word_model.h5')
+model.save('keras_next_word_model', overwrite= True, save_format = 'tf' )
 pickle.dump(history, open("history.p", "wb"))
-model = load_model('keras_next_word_model.h5')
+model = load_model('keras_next_word_model')
 history = pickle.load(open("history.p", "rb"))
 
 
