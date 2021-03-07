@@ -11,9 +11,10 @@ import heapq
 
 
 
+
 # import text
-path="C:/Users/drewa/OneDrive/Documents/GitHub/390MiniProject/1661-0.txt"
-text = open(path).read().lower()
+path="./1661-0.txt"
+text = open(path, encoding='UTF-8').read().lower()
 print('corpus length:', len(text))
 print("test")
 
