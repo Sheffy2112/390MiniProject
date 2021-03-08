@@ -1,12 +1,16 @@
 from nltk.tokenize import RegexpTokenizer
 from keras.models import Sequential, load_model
-from keras.layers import LSTM
-from keras.layers.core import Dense, Activation
-from keras.optimizers import RMSprop
 import numpy as np
 import matplotlib.pyplot as plt
 import pickle
 import heapq
+
+import warnings
+
+warnings.filterwarnings("ignore")
+
+# cumulative BLEU scores
+from nltk.translate.bleu_score import sentence_bleu
 
 # import text
 path = "C:/Users/drewa/OneDrive/Documents/GitHub/390MiniProject/1661-0.txt"
@@ -73,20 +77,48 @@ def predict_completions(text, n=3):
     return [unique_words[idx] for idx in next_indices]
 
 
+
+
+
+def bleuScore(initial, compare):
+    score = sentence_bleu(initial, compare, weights=(1, 0, 0, 0))
+    return sentence_bleu(initial, compare, weights=(0.25, 0.25, 0.25, 0.25))
+
 q = "Your life will never be the same again"
 s = "the sun is bright and"
 
+
 def results(sentence):
+    res = 0
     print("correct sentence: ", sentence)
     end = len(sentence.split()) - 3
     seq = " ".join(tokenizer.tokenize(sentence.lower())[0:end])
+    reference = " ".join(tokenizer.tokenize(sentence.lower())[0:end + 1])
+    reference = reference.split()
+    candidate = reference.copy()
 
-    print("Sequence: ", seq)
+    candidate = candidate[:-1]
+    reference = [reference]
+    predict_completion = predict_completions(seq, 5)
+    for i in predict_completion:
 
-    print("next possible words: ", predict_completions(seq, 5))
+        candidate = candidate + [i]
+        score =bleuScore(reference, candidate)
+        candidate = candidate[:-1]
+
+        if score > res: res =score
+
+    print('Cumulative 1-gram: %f' % res)
+
+
+    '''for i in predict_completion:
+        candidate = (reference[:-1])
+        candidate +=[i]
+        bleuScore(reference, candidate)
+
+        candidate.pop()
+    '''
+    # result should return a missing word trying to be guessed along with a array of the corrected words
+
 
 results(q)
-
-
-
-
