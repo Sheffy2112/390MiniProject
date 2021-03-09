@@ -77,10 +77,6 @@ def predict_completions(text, n=3):
     return [unique_words[idx] for idx in next_indices]
 
 
-q = "Your life will never be the same again"
-s = "I have lived in here for ten years"
-
-
 def results(sentence):
     res = 0
 
@@ -105,10 +101,15 @@ def results(sentence):
     # result should return a missing word trying to be guessed along with a array of the corrected words
 
 
+q = "Your life will never be the same again"
+s = "I have lived in here for ten years"
+
 Data = [q, s]
-#prediction green,pink blue purple
-#initial "the sun is always yellow"
-#compare "the sun is always green"
+
+
+# prediction green,pink blue purple
+# initial "the sun is always yellow"
+# compare "the sun is always green"
 # compare the sun is always pink"
 def bleuScore(initial, compare):
     score = sentence_bleu(initial, compare, weights=(1, 0, 0, 0))
