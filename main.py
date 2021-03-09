@@ -77,20 +77,18 @@ def predict_completions(text, n=3):
     return [unique_words[idx] for idx in next_indices]
 
 
-
-
-
 def bleuScore(initial, compare):
     score = sentence_bleu(initial, compare, weights=(1, 0, 0, 0))
     return sentence_bleu(initial, compare, weights=(0.25, 0.25, 0.25, 0.25))
 
+
 q = "Your life will never be the same again"
-s = "the sun is bright and"
+s = "I have lived in here for ten years"
 
 
 def results(sentence):
     res = 0
-    print("correct sentence: ", sentence)
+
     end = len(sentence.split()) - 3
     seq = " ".join(tokenizer.tokenize(sentence.lower())[0:end])
     reference = " ".join(tokenizer.tokenize(sentence.lower())[0:end + 1])
@@ -103,22 +101,28 @@ def results(sentence):
     for i in predict_completion:
 
         candidate = candidate + [i]
-        score =bleuScore(reference, candidate)
+        score = bleuScore(reference, candidate)
         candidate = candidate[:-1]
 
-        if score > res: res =score
+        if score > res: res = score
+    return res
 
-    print('Cumulative 1-gram: %f' % res)
-
-
-    '''for i in predict_completion:
-        candidate = (reference[:-1])
-        candidate +=[i]
-        bleuScore(reference, candidate)
-
-        candidate.pop()
-    '''
     # result should return a missing word trying to be guessed along with a array of the corrected words
 
 
-results(q)
+Data = [q, s]
+
+
+def resultsAll(array):
+    count, sumScore = 0, 0
+
+    for i in array:
+        score = results(i)
+        sumScore = sumScore + score
+        count += 1
+
+    return sumScore / count
+
+
+val = resultsAll(Data)
+print("the Final Evaluation of the Model Is " + str(val))
