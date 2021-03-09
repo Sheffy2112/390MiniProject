@@ -77,11 +77,6 @@ def predict_completions(text, n=3):
     return [unique_words[idx] for idx in next_indices]
 
 
-def bleuScore(initial, compare):
-    score = sentence_bleu(initial, compare, weights=(1, 0, 0, 0))
-    return sentence_bleu(initial, compare, weights=(0.25, 0.25, 0.25, 0.25))
-
-
 q = "Your life will never be the same again"
 s = "I have lived in here for ten years"
 
@@ -111,6 +106,13 @@ def results(sentence):
 
 
 Data = [q, s]
+#prediction green,pink blue purple
+#initial "the sun is always yellow"
+#compare "the sun is always green"
+# compare the sun is always pink"
+def bleuScore(initial, compare):
+    score = sentence_bleu(initial, compare, weights=(1, 0, 0, 0))
+    return sentence_bleu(initial, compare, weights=(0.25, 0.25, 0.25, 0.25))
 
 
 def resultsAll(array):
