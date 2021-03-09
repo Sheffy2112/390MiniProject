@@ -77,6 +77,8 @@ def predict_completions(text, n=3):
     return [unique_words[idx] for idx in next_indices]
 
 
+
+
 def results(sentence):
     res = 0
 
@@ -100,17 +102,28 @@ def results(sentence):
 
     # result should return a missing word trying to be guessed along with a array of the corrected words
 
-
 q = "Your life will never be the same again"
 s = "I have lived in here for ten years"
 
+
 Data = [q, s]
+'''
+Grab the function bleuScore:  this method calculates the score comparing the inital sentence with the compare sentence
+the var  compare is an list of strings var = ['your', 'life','will', 'never','be', 'yellow']
+the var initial is an list of lists of string = [['your', 'life','will', 'never','be', 'the']]
+the output will be the resulting score
 
 
-# prediction green,pink blue purple
-# initial "the sun is always yellow"
-# compare "the sun is always green"
-# compare the sun is always pink"
+'''
+"""
+will need to have the following lines in your code
+import warnings
+
+warnings.filterwarnings("ignore")
+
+# cumulative BLEU scores
+from nltk.translate.bleu_score import sentence_bleu
+"""
 def bleuScore(initial, compare):
     score = sentence_bleu(initial, compare, weights=(1, 0, 0, 0))
     return sentence_bleu(initial, compare, weights=(0.25, 0.25, 0.25, 0.25))
