@@ -9,7 +9,7 @@ import pickle
 import heapq
 
 # import text
-path = "C:/Users/drewa/OneDrive/Documents/GitHub/390MiniProject/1661-0.txt"
+path = "./1661-0.txt"
 
 text = open(path, encoding='utf-8').read().lower()
 print('corpus length:', len(text))
@@ -52,7 +52,10 @@ model.add(Dense(len(unique_words)))
 model.add(Activation('softmax'))
 
 # training
-
+try:
+    model = load_model('keras_next_word_model.h5')
+except:
+    print("no model file, training from scratch")
 optimizer = RMSprop(lr=0.01)
 model.compile(loss='categorical_crossentropy', optimizer=optimizer, metrics=['accuracy'])
 history = model.fit(X, Y, validation_split=0.05, batch_size=128, epochs=2, shuffle=True).history

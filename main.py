@@ -13,7 +13,7 @@ warnings.filterwarnings("ignore")
 from nltk.translate.bleu_score import sentence_bleu
 
 # import text
-path = "C:/Users/drewa/OneDrive/Documents/GitHub/390MiniProject/1661-0.txt"
+path = "./1661-0.txt"
 
 text = open(path, encoding='utf-8').read().lower()
 
@@ -52,11 +52,11 @@ def prepare_input(text):
     x = np.zeros((1, WORD_LENGTH, len(unique_words)))
     for t, word in enumerate(text.split()):
         # print(word)
-        x[0, t, unique_word_index[word]] = 1
+        x[0, t, unique_word_index.get(word)] = 1
     return x
 
 
-prepare_input("It is not a lack".lower())
+# prepare_input("It is not a lack".lower())
 
 
 def sample(preds, top_n=3):
@@ -68,7 +68,7 @@ def sample(preds, top_n=3):
     return heapq.nlargest(top_n, range(len(preds)), preds.take)
 
 
-def predict_completions(text, n=3):
+def predict_completions(text, n):
     if text == "":
         return ("0")
     x = prepare_input(text)
@@ -102,11 +102,21 @@ def results(sentence):
 
     # result should return a missing word trying to be guessed along with a array of the corrected words
 
-q = "Your life will never be the same again"
-s = "I have lived in here for ten years"
+sentences = open("C:/Users/Hoz/390MiniProject/eightwordsentencesnoconvos.txt", encoding='utf-8').read().lower()
 
+sentences = sentences.split("," )
 
-Data = [q, s]
+import re
+Data = []
+
+for s in range(len(sentences)):
+    sentences[s] = re.sub(r'[^A-Za-z0-9 ]+', '', sentences[s])
+        
+for s in sentences:
+    if (len(s.split()) == 8):
+        Data.append(s)
+    
+
 '''
 Grab the function bleuScore:  this method calculates the score comparing the inital sentence with the compare sentence
 the var  compare is an list of strings var = ['your', 'life','will', 'never','be', 'yellow']
@@ -133,6 +143,7 @@ def resultsAll(array):
     count, sumScore = 0, 0
 
     for i in array:
+        print(i)
         score = results(i)
         sumScore = sumScore + score
         count += 1
